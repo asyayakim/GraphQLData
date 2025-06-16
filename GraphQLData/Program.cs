@@ -1,18 +1,23 @@
+using GraphQLData.Db;
 using GraphQLData.GraphQL;
-using GraphQLData.Models;
 using GraphQLData.Services;
 using HotChocolate.AspNetCore.Voyager;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<UserService>();
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>();
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
 builder.Services.AddRouting();
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseNpgsql(builder.
+        Configuration.
+        GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
-//app.MapGraphQL();
 app.UseRouting();
 app.UseEndpoints(endpoints =>
 {

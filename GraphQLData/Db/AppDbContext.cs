@@ -11,4 +11,6 @@ public class AppDbContext : DbContext
     {
     }
     public DbSet<UserResult> Users { get; set; }
+    public DbSet<Picture> Pictures { get; set; }
+    public DbSet<Name> Names { get; set; }
 }
