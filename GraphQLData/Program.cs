@@ -7,15 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<UserService>();
-builder.Services
-    .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
-builder.Services.AddRouting();
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseNpgsql(builder.
         Configuration.
         GetConnectionString("DefaultConnection")));
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true);
+builder.Services.AddRouting();
 
 var app = builder.Build();
 app.UseRouting();
